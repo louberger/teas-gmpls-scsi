@@ -47,17 +47,27 @@
         Capability Descriptor (ISCD) Switching Capability Specific
         Information (SCSI) fields.  This "Generalized SCSI" can be used
         with routing protocols that define GMPLS ISCDs, and any specific
-        technology.  This document does not modify an existing
+        technology.  This document does not modify any existing
         technology specific formats and is defined for use in
         conjunction with new GMPLS Switching Capability types.
+        The context for this document is Generalized MPLS, and the
+        reader is expected to be familiar with the GMPLS architecture
+        and associate protocol standards.
       </t>
     </abstract>
   </front>
 
-
   <middle>
 
     <section title="Introduction" anchor="sec-intro">
+      <t>
+        The context for this document is Generalized MPLS, and the
+        reader is expected to be familiar with the GMPLS architecture,
+        associate terminology and protocol standards. Notably, but
+        not limited to, <xref target="RFC3945"/>, <xref
+        target="RFC4202"/>, <xref target="RFC4203"/> and <xref
+        target="RFC5307"/>.
+      </t>
       <t>
         The Interface Switching Capability Descriptor (ISCD) <xref
         target="RFC4202"/> allows routing protocols such as OSPF and
@@ -95,9 +105,15 @@
     <section title="Terminology" anchor="sec-definitions">
       <t>
         The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
-        NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and
-        "OPTIONAL" in this document are to be interpreted as described
-        in <xref target="RFC2119"/>.
+        NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+        "MAY", and "OPTIONAL" in this document are to be interpreted as
+        described in <xref target="RFC2119"/>.
+      </t>
+      <t>
+        The reader is expected to be familiar with GMPLS terminology,
+        e.g. as found in <xref target="RFC3945"/>, as well as the
+        terminology used in <xref target="RFC4202"/>, <xref
+        target="RFC4203"/> and <xref target="RFC5307"/>.
       </t>
 
     </section>
@@ -133,12 +149,8 @@
           <t hangText="Type (2 octets):"><vspace blankLines="0" />
 
           This field indicates the type and structure of the information
-          contained in the Value field.  Note that the value range of
-          this field has been split in two.  The lower range is used to
-          indicated technology specific formats, while the higher range
-          is reserved for formats that can be used with more than one
-          technology.  See <xref target="sec-iana"/>
-                   </t>
+          contained in the Value field. 
+          </t>
           <t hangText="Length (2 octets):"><vspace blankLines="0" />
 
           This field MUST be set to the size, in octets (bytes), of the
@@ -148,8 +160,9 @@
           </t>
           <t hangText="Value (variable):"><vspace blankLines="0" />
 
-          A variable length field, formatted according to the value of
-          the Type field.  This field can be omitted for certain types.
+          A variable length field, formatted according to the definition
+          indicated by value of the Type field.  This field can be
+          omitted for certain types.
           </t>
         </list>
       </t>
@@ -205,7 +218,7 @@
         TLVs Types" registry under either the the "Generalized
         Multi-Protocol Label Switching (GMPLS) Signaling Parameters"
         registry or a new "Generalized Multi-Protocol Label Switching
-        (GMPLS) Routing Parameters" registry.
+        (GMPLS) Routing Parameters" registry, at their desecration.
       </t>
       <t>
         The definition of the new registry is as follows:
@@ -235,10 +248,12 @@
         </t> 
     </section>
 
-    <section title="Acknowledgements" anchor="sec-ack">
+    <section title="Acknowledgments" anchor="sec-ack">
       <t>
         The authors would like to thank Adrian Farrel and Julien Meuric
-        for the careful review and suggestions. 
+        for the careful review and suggestions.  Thomas Heide Clausen
+        provided useful comments as part of the Routing Directorate
+        review. 
       </t>
     </section>
 
@@ -256,6 +271,7 @@
     <references title="Informative References">
       <?rfc include="reference.I-D.ietf-ccamp-ospf-availability-extension.xml"?>
       <?rfc include="reference.RFC.2154"?>
+      <?rfc include="reference.RFC.3945"?>
       <?rfc include="reference.RFC.5304"?>
       <?rfc include="reference.RFC.5226"?>
       <?rfc include="reference.RFC.7138"?>
