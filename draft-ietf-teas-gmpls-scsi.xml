@@ -8,8 +8,7 @@
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
 
-<rfc ipr="trust200902" category="std" docName="draft-ietf-teas-gmpls-scsi-02 ">
-
+<rfc ipr="trust200902" category="std" docName="draft-ietf-teas-gmpls-scsi-03">
 
   <front>
     <title abbrev="Generalized SCSI">
@@ -32,9 +31,8 @@
 
     <author initials='L.' surname="Berger" fullname='Lou Berger'>
       <organization>LabN Consulting, L.L.C.</organization>
-	  <address>	     
-		 <email>lberger@labn.net</email>
-	   </address>
+          <address>                          <email>lberger@labn.net</email>
+           </address>
     </author>
 
     <date year="2017" />
@@ -131,8 +129,7 @@
           </artwork>
           <postamble></postamble>
         </figure>
-        
-        <list style="hanging">
+               <list style="hanging">
           <t hangText="Type (2 octets):"><vspace blankLines="0" />
 
           This field indicates the type and structure of the information
@@ -141,8 +138,7 @@
           indicated technology specific formats, while the higher range
           is reserved for formats that can be used with more than one
           technology.  See <xref target="sec-iana"/>
-          
-          </t>
+                   </t>
           <t hangText="Length (2 octets):"><vspace blankLines="0" />
 
           This field MUST be set to the size, in octets (bytes), of the
@@ -166,8 +162,7 @@
         The corollary of this is that the Generalized SCSI MUST NOT be
         used for ISCDs of technologies whose Switching Capability
         definition do not reference this document.
-      </t> 
-      <t>
+      </t>      <t>
         The Generalized SCSI MAY contain a sequence of zero or more
         SCSI-TLVs.  Sub-TLV parsing (format) errors, such as an underrun
         or overrun, MUST be treated as a malformed ISCD.  SCSI-TLVs MUST
@@ -221,9 +216,8 @@
             <![CDATA[
     Value       SCSI-TLV                Switching Type   Reference
     ---------   ----------------------- --------------   ---------
-    0           Reserved                               [This ID]
-    1-65535     Unassigned                (Any, or     [This ID]
-                                          value list) 
+    0           Reserved                                 [This ID]
+    1-65535     Unassigned              (value list)     [This ID]
         ]]>
           </artwork>
         </figure>
@@ -234,14 +228,19 @@
         The registry should be established with registration policies of
         "Specification Required", see <xref
         target="RFC5226"/>.   </t>
-      <t>REMOVE THIS AFTER PUBLICATION: The designated expert will be appointed by the Routing AD. It is suggested to appoint any current TEAS WG chair. 
-      </t>
+        <t>
+          REMOVE THIS AFTER PUBLICATION: The designated expert will be
+          appointed by the Routing AD. It is suggested to appoint any
+          current TEAS WG chair.
+        </t> 
     </section>
 
     <section title="Acknowledgements" anchor="sec-ack">
-        <t>The authors would like to thank Adrian Farrel and Julien Meuric for the careful review and suggestions.
-        </t>
-        </section>
+      <t>
+        The authors would like to thank Adrian Farrel and Julien Meuric
+        for the careful review and suggestions. 
+      </t>
+    </section>
 
   </middle>
 
