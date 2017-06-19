@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc toc="yes"?>
+<?rfc tocompact="yes"?>
+<?rfc tocdepth="6"?>
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes"?>
+<?rfc compact="yes" ?>
+<?rfc subcompact="no" ?>
+
+<rfc ipr="trust200902" category="std" docName="draft-ietf-teas-gmpls-scsi-02 ">
+
+
+  <front>
+    <title abbrev="Generalized SCSI">
+      Generalized Interface Switching Capability
+      Descriptor - Switching Capability Specific Information
+    </title>
+
+    <author initials="D." surname="Ceccarelli" fullname="Daniele Ceccarelli">
+      <organization>Ericsson</organization>
+      <address>
+        <postal>
+          <street>Torshamnsgatan 21</street>
+          <code></code>
+          <city>Kista - Stockholm</city>
+          <country>Sweden</country>
+        </postal>
+        <email>daniele.ceccarelli@ericsson.com</email>
+      </address>
+    </author>
+
+    <author initials='L.' surname="Berger" fullname='Lou Berger'>
+      <organization>LabN Consulting, L.L.C.</organization>
+	  <address>	     
+		 <email>lberger@labn.net</email>
+	   </address>
+    </author>
+
+    <date year="2017" />
+    <area>Routing</area>
+    <workgroup>TEAS Working Group</workgroup>
+    <keyword>OSPF-TE</keyword>
+    <keyword>GMPLS</keyword>
+    <abstract>
+      <t>
+        This document defines a generic information structure for
+        information carried in routing protocol Interface Switching
+        Capability Descriptor (ISCD) Switching Capability Specific
+        Information (SCSI) fields.  This "Generalized SCSI" can be used
+        with routing protocols that define GMPLS ISCDs, and any specific
+        technology.  This document does not modify an existing
+        technology specific formats and is defined for use in
+        conjunction with new GMPLS Switching Capability types.
+      </t>
+    </abstract>
+  </front>
+
+
+  <middle>
+
+    <section title="Introduction" anchor="sec-intro">
+      <t>
+        The Interface Switching Capability Descriptor (ISCD) <xref
+        target="RFC4202"/> allows routing protocols such as OSPF and
+        ISIS to carry technology specific information in the the
+        Switching Capability-specific information (SCSI) field, see
+        <xref target="RFC4203"/> and <xref target="RFC5307"/>.  The
+        format of an SCSI field is dictated by the specific technology
+        being represented as indicated by the ISCD Switching Capability
+        (SC) type field.  Existing Switching Capabilities are managed by
+        IANA in the <eref
+        target="http://www.iana.org/assignments/gmpls-sig-parameters/gmpls-sig-parameters.xml#gmpls-sig-parameters-3">Switching
+        Types registry</eref> and the related "IANA-GMPLS-TC-MIB"
+        definitions.
+      </t>
+      <t>
+        <xref target="RFC7138"/> introduced a "sub-TLV" structure to its
+        technology specific SCSI field.  The Sub-Type-Length-Value (TLV)
+        based approach allows for greater flexibility in the structure,
+        ordering, and ability to support extensions of the SC
+        (technology) specific format.  This Sub-TLV approach is also
+        used in <xref target="RFC7688"/>.
+      </t>
+      <t>
+        This document generalizes this approach and defines a new
+        generalized SCSI field format for use by future specific
+        technologies and Switching Capability types.  The generalized
+        SCSI carries SCSI-TLVs that may be defined within the scope of a
+        specific technology, or shared across multiple technologies
+        (e.g., <xref
+        target="I-D.ietf-ccamp-ospf-availability-extension"/>).  This
+        document also establishes a registry for SCSI-TLV definitions
+        that may be shared across multiple technologies.
+      </t>
+    </section>
+    <section title="Terminology" anchor="sec-definitions">
+      <t>
+        The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+        NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and
+        "OPTIONAL" in this document are to be interpreted as described
+        in <xref target="RFC2119"/>.
+      </t>
+
+    </section>
+
+    <!--2-->
+    <section title="Generalized SCSI Formats" anchor="sec-format">
+      <t>
+        The Generalized SCSI is composed of zero or more variable length
+        type-length-value fields which are each called a SCSI-TLV.
+        There are no specific size restrictions on these SCSI-TLV.  Size
+        and other formatting restrictions may be imposed by the routing
+        protocol ISCD field, refer to <xref target="RFC4203"/> and <xref
+        target="RFC5307"/>.
+      </t>
+
+      <t>
+        <figure title="TLV format" anchor="fig-a">
+          <preamble>The SCSI-TLV format is:</preamble>
+          <artwork>
+            <![CDATA[
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |             Type              |             Length            |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    ...                           Value                           ...
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+            ]]>
+          </artwork>
+          <postamble></postamble>
+        </figure>
+        
+        <list style="hanging">
+          <t hangText="Type (2 octets):"><vspace blankLines="0" />
+
+          This field indicates the type and structure of the information
+          contained in the Value field.  Note that the value range of
+          this field has been split in two.  The lower range is used to
+          indicated technology specific formats, while the higher range
+          is reserved for formats that can be used with more than one
+          technology.  See <xref target="sec-iana"/>
+          
+          </t>
+          <t hangText="Length (2 octets):"><vspace blankLines="0" />
+
+          This field MUST be set to the size, in octets (bytes), of the
+          Value field.  The value of the field MUST be zero or divisible
+          by 4.  Note that this implies that the Value field can be
+          omitted or contain padding.
+          </t>
+          <t hangText="Value (variable):"><vspace blankLines="0" />
+
+          A variable length field, formatted according to the value of
+          the Type field.  This field can be omitted for certain types.
+          </t>
+        </list>
+      </t>
+    </section>
+
+    <section title="Procedures" anchor="sec-proc">
+      <t>
+        The ISCD can include a Generalized SCSI when advertising technologies
+        whose Switching Capability definition references this document.
+        The corollary of this is that the Generalized SCSI MUST NOT be
+        used for ISCDs of technologies whose Switching Capability
+        definition do not reference this document.
+      </t> 
+      <t>
+        The Generalized SCSI MAY contain a sequence of zero or more
+        SCSI-TLVs.  Sub-TLV parsing (format) errors, such as an underrun
+        or overrun, MUST be treated as a malformed ISCD.  SCSI-TLVs MUST
+        be processed in the order received and, if re-originated,
+        ordering MUST be preserved.  Unknown SCSI-TLVs MUST be ignored
+        and transparently processed, i.e., re-originated when appropriate.
+        Processing related to multiple SCSI-TLVs of the same type may be
+        further refined based on the definition on the type.
+      </t>
+    </section>
+
+    <!--4-->
+    <section title="Security Considerations" anchor="sec-secu">
+      <t>
+        This document does not introduce any security issue beyond those
+        discussed in <xref target="RFC4203"/> and <xref
+        target="RFC5307"/>. As discussed there, the information carried
+        in ISCDs are not used for SPF computation or normal routing and
+        the extensions here defined do not have direct effect on IP
+        routing. Tampering with GMPLS TE LSAs may have an effect on the
+        underlying transport network.  Mechanisms such as <xref
+        target="RFC2154"/> and <xref target="RFC5304"/> to protect the
+        transmission of this information are suggested.
+      </t>
+    </section>
+
+    <!--5-->
+    <section title="IANA Considerations" anchor="sec-iana">
+      <t>
+        This document defines a new SCSI-TLV that is carried in the SCSI
+        field of the ISCDs defined in <xref target="RFC4203"/> and <xref
+        target="RFC5307"/>.  The SCSI-TLV includes a 16-bit type
+        identifier (the Type field).  The same Type field values are
+        applicable to the new SCSI-TLV.
+      </t>
+
+      <t>
+        IANA is requested to create and maintain a new registry, the
+        "Generalized SCSI (Switching Capability Specific Information)
+        TLVs Types" registry under either the the "Generalized
+        Multi-Protocol Label Switching (GMPLS) Signaling Parameters"
+        registry or a new "Generalized Multi-Protocol Label Switching
+        (GMPLS) Routing Parameters" registry.
+      </t>
+      <t>
+        The definition of the new registry is as follows:
+      </t>
+      <t>
+        <figure>
+          <artwork>
+            <![CDATA[
+    Value       SCSI-TLV                Switching Type   Reference
+    ---------   ----------------------- --------------   ---------
+    0           Reserved                               [This ID]
+    1-65535     Unassigned                (Any, or     [This ID]
+                                          value list) 
+        ]]>
+          </artwork>
+        </figure>
+        New allocation requests to this registry must indicate the
+        value or values to be used in the Switching Type column.
+      </t>
+      <t>
+        The registry should be established with registration policies of
+        "Specification Required", see <xref
+        target="RFC5226"/>.   </t>
+      <t>REMOVE THIS AFTER PUBLICATION: The designated expert will be appointed by the Routing AD. It is suggested to appoint any current TEAS WG chair. 
+      </t>
+    </section>
+
+    <section title="Acknowledgements" anchor="sec-ack">
+        <t>The authors would like to thank Adrian Farrel and Julien Meuric for the careful review and suggestions.
+        </t>
+        </section>
+
+  </middle>
+
+
+  <back>
+    <references title="Normative References">
+      <?rfc include="reference.RFC.2119"?>
+      <?rfc include="reference.RFC.4202"?>
+      <?rfc include="reference.RFC.4203"?>
+      <?rfc include="reference.RFC.5307"?>
+    </references>
+
+    <references title="Informative References">
+      <?rfc include="reference.I-D.ietf-ccamp-ospf-availability-extension.xml"?>
+      <?rfc include="reference.RFC.2154"?>
+      <?rfc include="reference.RFC.5304"?>
+      <?rfc include="reference.RFC.5226"?>
+      <?rfc include="reference.RFC.7138"?>
+      <?rfc include="reference.RFC.7688"?>
+    </references>
+  </back>
+
+</rfc>
+
+
+<!-- Change log
+
+
+-->
+<!-- LocalWords: xref CDATA exploders BUA -->
+
+
