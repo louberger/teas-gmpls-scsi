@@ -23,8 +23,8 @@ Contributions.
 * For details see: https://travis-ci.org/louberger/teas-gmpls-scsi
 * For results on past commits see: https://travis-ci.org/louberger/teas-gmpls-scsi/builds
 
-## Xml2rfc formatted preview of this document can be obtained: [text](https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc.cgi?url=https://raw.githubusercontent.com/louberger/teas-gmpls-scsi/master/draft-ietf-teas-gmpls-scsi.xml) and [html](https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc.cgi?url=https://raw.githubusercontent.com/louberger/teas-gmpls-scsi/master/draft-ietf-teas-gmpls-scsi.xml&modeAsFormat=html%2Fascii)
+## Xml2rfc formatted preview of this document: [text](https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc.cgi?url=https://raw.githubusercontent.com/louberger/teas-gmpls-scsi/master/draft-ietf-teas-gmpls-scsi.xml) and [html](https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc.cgi?url=https://raw.githubusercontent.com/louberger/teas-gmpls-scsi/master/draft-ietf-teas-gmpls-scsi.xml&modeAsFormat=html%2Fascii)
 
-## idnits results can be obtained [here](https://tools.ietf.org/idnits?url=https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc.cgi?url=https://raw.githubusercontent.com/louberger/teas-gmpls-scsi/master/draft-ietf-teas-gmpls-scsi.xml)
+## idnits results: [here](https://tools.ietf.org/idnits?url=https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc.cgi?url=https://raw.githubusercontent.com/louberger/teas-gmpls-scsi/master/draft-ietf-teas-gmpls-scsi.xml)
 
 ## Published version of the draft can be found at: IETF [datatacker](https://datatracker.ietf.org/doc/draft-ietf-teas-gmpls-scsi/) and [tools](https://tools.ietf.org/html/draft-ietf-teas-gmpls-scsi)
