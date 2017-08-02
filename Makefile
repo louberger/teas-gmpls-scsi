@@ -1,3 +1,8 @@
+#Crazy makefile authored by Lou Berger <lberger@labn.net>
+#Modified by Christian Hopps <chopps@chopps.org>
+#The author makes no claim/restriction on use.  It is provided "AS IS".
+#This file is considered a hack and not production grade by the author
+
 DRAFT  = draft-ietf-teas-gmpls-scsi
 MODELS = 
 
@@ -16,6 +21,8 @@ REV	    := $(word 2, $(REVS))
 OLD          = $(ID_DIR)/$(DRAFT)-$(PREV_REV)
 NEW          = $(ID_DIR)/$(DRAFT)-$(REV)
 
+SHELL	     = bash
+
 TREES := $(MODELS:.yang=.tree)
 
 %.tree: %.yang
@@ -28,27 +35,29 @@ TREES := $(MODELS:.yang=.tree)
 
 %.txt: %.xml
 	@if [ $(WITHXML2RFC) == 0 ] ; then 	\
-		rm -f $@.prev; cp -pf $@ $@.prev ; \
-		xml2rfc $< 			; \
-		diff $@.prev $@ || exit 0 	; \
+		rm -f $@.prev; cp -pf $@ $@.prev > /dev/null 2>&1 ; \
+		xml2rfc $< -o $@		; \
+		if [ -f $@.prev ] ; then diff $@.prev $@ || exit 0 ; fi ; \
 	fi
 
 %.html: %.xml
 	@if [ $(WITHXML2RFC) == 0 ] ; then 	\
-		rm -f $@.prev; cp -pf $@ $@.prev ; \
-		xml2rfc --html $< 		; \
+		rm -f $@.prev; cp -pf $@ $@.prev > /dev/null 2>&1 ; \
+		xml2rfc --html $< -o $@		; \
 	fi
 
 %.raw: %.xml
 	@if [ $(WITHXML2RFC) == 0 ] ; then 	\
-		rm -f $@.prev; cp -pf $@ $@.prev ; \
-		xml2rfc --raw $< 		; \
-		mv -f $@.txt $@			; \
+		rm -f $@.prev; cp -pf $@ $@.prev > /dev/null 2>&1 ; \
+		xml2rfc --raw $< -o $@	; \
 	fi
 
 all:	$(TREES) $(DRAFT).txt $(DRAFT).html $(DRAFT).raw
 
+#for testing
 vars:
+	which xml2rfc
+	echo WITHXML2RFC=$(WITHXML2RFC)
 	echo PYTHONPATH=$(PYTHONPATH)
 	echo PLUGPATH=$(PLUGPATH)
 	echo PREV_REV=$(PREV_REV)
@@ -83,11 +92,13 @@ $(DRAFT)-diff.txt: $(DRAFT).txt
 
 idnits: $(DRAFT).txt
 	@if [ ! -f idnits ] ; then \
-		-rm -f $@ 					;\
+		rm -f $@ 					;\
 		wget http://tools.ietf.org/tools/idnits/idnits	;\
 		chmod 755 idnits				;\
 	fi
-	idnits $(DRAFT).txt
+	./idnits $(DRAFT).txt > $@.out
+	@cat $@.out
+	@grep -q 'Summary: 0 error' $@.out
 
 id: $(DRAFT).txt $(DRAFT).html
 	@if [ ! -e $(ID_DIR) ] ; then \
