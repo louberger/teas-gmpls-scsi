@@ -215,10 +215,9 @@
       <t>
         IANA is requested to create and maintain a new registry, the
         "Generalized SCSI (Switching Capability Specific Information)
-        TLVs Types" registry under either the the "Generalized
+        TLVs Types" registry under  the the "Generalized
         Multi-Protocol Label Switching (GMPLS) Signaling Parameters"
-        registry or a new "Generalized Multi-Protocol Label Switching
-        (GMPLS) Routing Parameters" registry, at their desecration.
+        registry. 
       </t>
       <t>
         The definition of the new registry is as follows:
