@@ -126,7 +126,8 @@
         There are no specific size restrictions on these SCSI-TLV.  Size
         and other formatting restrictions may be imposed by the routing
         protocol ISCD field, refer to <xref target="RFC4203"/> and <xref
-        target="RFC5307"/>.
+        target="RFC5307"/>. Please also refer to <xref target="RFC3630"/> for
+        the treatment of malformed Link TLVs.
       </t>
 
       <t>
