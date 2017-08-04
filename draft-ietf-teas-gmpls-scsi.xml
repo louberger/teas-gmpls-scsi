@@ -263,6 +263,7 @@
   <back>
     <references title="Normative References">
       <?rfc include="reference.RFC.2119"?>
+      <?rfc include="reference.RFC.3630"?>
       <?rfc include="reference.RFC.4202"?>
       <?rfc include="reference.RFC.4203"?>
       <?rfc include="reference.RFC.5307"?>
