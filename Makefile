@@ -27,11 +27,15 @@ TREES := $(MODELS:.yang=.tree)
 
 %.tree: %.yang
 	@echo Updating $< revision date
-	@rm -f $<.prev; cp -pf $< $<.prev 
-	@sed 's/revision.\"[0-9]*\-[0-9]*\-[0-9]*\"/revision "'`date +%F`'"/' < $<.prev > $<
+	@rm -f $<.prev; cp -pf $< $<.prev
+	@sed 's/revision.\(\|\"\)[0-9]*\-[0-9]*\-[0-9]*\(\|\"\)/revision \1'`date +%F`'\2/' < $<.prev > $<
 	@diff $<.prev $< || exit 0
 	@echo Generating $@	
-	@PYTHONPATH=$(PYTHONPATH) pyang --ietf -f tree -p $(PLUGPATH) $< > $@  || exit 0
+	@PYTHONPATH=$(PYTHONPATH) pyang --ietf -f tree --tree-line-length 76 -p $(PLUGPATH) $< > $@  || exit 0
+
+%.jsonxsl: %.yang
+	@echo Generating $@
+	@PYTHONPATH=$(PYTHONPATH) pyang -f jsonxsl  -p $(PLUGPATH) $< > $@ || exit 0
 
 %.txt: %.xml
 	@if [ $(WITHXML2RFC) == 0 ] ; then 	\
@@ -65,19 +69,22 @@ vars:
 	echo OLD=$(OLD)
 
 $(DRAFT).xml: $(MODELS)
-	@rm -f $@.prev; cp -p $@ $@.prev 
+	@rm -f $@.prev; cp -p $@ $@.prev
 	@for model in $? ; do \
+		rm -f $@.tmp; cp -p $@ $@.tmp	 		 	; \
 		echo Updating $@ based on $$model		 	; \
 		base=`echo $$model | cut -d. -f 1` 		 	; \
+		echo $${base};\
 		start_stop=(`awk 'BEGIN{pout=1}				\
 			/^<CODE BEGINS> file .'$${base}'/ 		\
 				{pout=0; print NR-1;} 			\
-			pout == 0 &&/^<CODE ENDS>/ 			\
-				{pout=1; print NR;}' $@.prev`) 		; \
-		head -$${start_stop[0]}    $@.prev    		> $@	;\
+			pout == 0 && /^<CODE E/ 			\
+				{pout=1; print NR;}' $@.tmp`) 		; \
+		head -$${start_stop[0]}    $@.tmp    		> $@	; \
 		echo '<CODE BEGINS> file "'$${base}'@'`date +%F`'.yang"'>> $@;\
-		cat $$model					>> $@	;\
-		tail -n +$${start_stop[1]} $@.prev 		>> $@	;\
+		cat $$model					>> $@	; \
+		tail -n +$${start_stop[1]} $@.tmp 		>> $@	; \
+		rm -f $@.tmp 		 				; \
 	done
 	diff -bw $@.prev $@ || exit 0
 
@@ -92,7 +99,7 @@ $(DRAFT)-diff.txt: $(DRAFT).txt
 
 idnits: $(DRAFT).txt
 	@if [ ! -f idnits ] ; then \
-		rm -f $@ 					;\
+		-rm -f $@ 					;\
 		wget http://tools.ietf.org/tools/idnits/idnits	;\
 		chmod 755 idnits				;\
 	fi
